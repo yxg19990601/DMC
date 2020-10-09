@@ -1,0 +1,31 @@
+server:
+  port: 8005
+spring:
+  thymeleaf:
+    prefix: classpath:/static/
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql:///device_manager_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: hy123456
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+
+
+# 配置定时任务向ems传送数据的周期
+configtask:
+  cron: "*/20 * * * * ?"
+
+szy:
+  server:
+    port: 29081
+
+ems:
+  port: 8088
+  host: 121.201.85.16
+

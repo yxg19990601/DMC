@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.szy.dao.DeviceMapper">
+  <resultMap id="BaseResultMap" type="com.ems.szy.domain.Device">
+    <id column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="building_id" jdbcType="VARCHAR" property="buildingId" />
+    <result column="gateway_id" jdbcType="VARCHAR" property="gatewayId" />
+    <result column="device_name" jdbcType="VARCHAR" property="deviceName" />
+    <result column="unit_id" jdbcType="INTEGER" property="unitId" />
+    <result column="ip_addr" jdbcType="VARCHAR" property="ipAddr" />
+    <result column="unit_name" jdbcType="VARCHAR" property="unitName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    device_id, building_id, gateway_id, device_name, device.unit_id, ip_addr
+  </sql>
+
+
+  <select id="selectList"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,unit.unit_name
+    from device left join unit on device.unit_id = unit.unit_id
+    <if test="ew != null">
+      ${ew.customSqlSegment}
+    </if>
+  </select>
+
+  <select id="selectByIp" parameterType="string"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,unit.unit_name
+    from device left join unit on device.unit_id = unit.unit_id where device.ip_addr = #{ip} limit 1
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device
+    where device_id = #{deviceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from device
+    where device_id = #{deviceId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="device_id" keyProperty="deviceId" parameterType="com.ems.szy.domain.Device" useGeneratedKeys="true">
+    insert into device (building_id, gateway_id, device_name, 
+      unit_id, ip_addr)
+    values (#{buildingId,jdbcType=VARCHAR}, #{gatewayId,jdbcType=VARCHAR}, #{deviceName,jdbcType=VARCHAR}, 
+      #{unitId,jdbcType=INTEGER}, #{ipAddr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="device_id" keyProperty="deviceId" parameterType="com.ems.szy.domain.Device" useGeneratedKeys="true">
+    insert into device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buildingId != null">
+        building_id,
+      </if>
+      <if test="gatewayId != null">
+        gateway_id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
+      </if>
+      <if test="unitId != null">
+        unit_id,
+      </if>
+      <if test="ipAddr != null">
+        ip_addr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buildingId != null">
+        #{buildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null">
+        #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null">
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="ipAddr != null">
+        #{ipAddr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.szy.domain.Device">
+    update device
+    <set>
+      <if test="buildingId != null">
+        building_id = #{buildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null">
+        gateway_id = #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null">
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="ipAddr != null">
+        ip_addr = #{ipAddr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where device_id = #{deviceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.szy.domain.Device">
+    update device
+    set building_id = #{buildingId,jdbcType=VARCHAR},
+      gateway_id = #{gatewayId,jdbcType=VARCHAR},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      ip_addr = #{ipAddr,jdbcType=VARCHAR}
+    where device_id = #{deviceId,jdbcType=INTEGER}
+  </update>
+</mapper>

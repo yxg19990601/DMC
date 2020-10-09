@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ems.szy.dao.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.ems.szy.domain.Record">
+    <id column="record_id" jdbcType="INTEGER" property="recordId" />
+    <result column="building_id" jdbcType="VARCHAR" property="buildingId" />
+    <result column="gateway_id" jdbcType="VARCHAR" property="gatewayId" />
+    <result column="meter_id" jdbcType="VARCHAR" property="meterId" />
+    <result column="function_id" jdbcType="VARCHAR" property="functionId" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_id, building_id, gateway_id, meter_id, function_id, `time`, `value`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectTop" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from record
+    order by record_id asc limit 1
+  </select>
+
+
+
+  <delete id="deleteTop">
+    delete from record
+  where record_id = (select c_id from (select min(record_id) c_id from record )a)
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from record
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="record_id" keyProperty="recordId" parameterType="com.ems.szy.domain.Record" useGeneratedKeys="true">
+    insert into record (building_id, gateway_id, meter_id, 
+      function_id, `time`, `value`
+      )
+    values (#{buildingId,jdbcType=VARCHAR}, #{gatewayId,jdbcType=VARCHAR}, #{meterId,jdbcType=VARCHAR}, 
+      #{functionId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{value,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="record_id" keyProperty="recordId" parameterType="com.ems.szy.domain.Record" useGeneratedKeys="true">
+    insert into record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buildingId != null">
+        building_id,
+      </if>
+      <if test="gatewayId != null">
+        gateway_id,
+      </if>
+      <if test="meterId != null">
+        meter_id,
+      </if>
+      <if test="functionId != null">
+        function_id,
+      </if>
+      <if test="time != null">
+        `time`,
+      </if>
+      <if test="value != null">
+        `value`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buildingId != null">
+        #{buildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null">
+        #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterId != null">
+        #{meterId,jdbcType=VARCHAR},
+      </if>
+      <if test="functionId != null">
+        #{functionId,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ems.szy.domain.Record">
+    update record
+    <set>
+      <if test="buildingId != null">
+        building_id = #{buildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayId != null">
+        gateway_id = #{gatewayId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterId != null">
+        meter_id = #{meterId,jdbcType=VARCHAR},
+      </if>
+      <if test="functionId != null">
+        function_id = #{functionId,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        `time` = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="value != null">
+        `value` = #{value,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ems.szy.domain.Record">
+    update record
+    set building_id = #{buildingId,jdbcType=VARCHAR},
+      gateway_id = #{gatewayId,jdbcType=VARCHAR},
+      meter_id = #{meterId,jdbcType=VARCHAR},
+      function_id = #{functionId,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP},
+      `value` = #{value,jdbcType=DECIMAL}
+    where record_id = #{recordId,jdbcType=INTEGER}
+  </update>
+</mapper>
