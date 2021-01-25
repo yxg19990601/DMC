@@ -51,11 +51,11 @@ public class JwtUtil {
     public static void main(String[] args) {
         String token = getToken("张三", "1234kjadsf");
 
-        System.out.println("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwd2QiOiIxMjM0a2phZHNmIiwiZXhwIjoxNTk5MzE1NTY0LCJ1c2VySWQiOiLlvKDkuIkifQ.DjulAT-IAlvxtEyuSwr_Z06JJ6_w_VioMRcL3VdJO0E");
+        System.out.println(token);
 
-        DecodedJWT verity = verity("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwd2QiOiIxMjM0a2phZHNmIiwiZXhwIjoxNTk5MzE1NTY0LCJ1c2VySWQiOiLlvKDkuIkifQ.DjulAT-IAlvxtEyuSwr_Z06JJ6_w_VioMRcL3VdJO0E");
+        DecodedJWT verity = verity(token);
         System.out.println(verity.getClaim("pwd").asString());
 
-
+        System.out.println(verity.getClaim("pwd").asString());
     }
 }

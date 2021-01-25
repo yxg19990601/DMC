@@ -9,17 +9,37 @@ spring:
     url: jdbc:mysql:///device_manager_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: hy123456
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        ## 连接池最大连接数（使用负值表示没有限制）
+        #spring.redis.pool.max-active=8
+        max-active: 8
+        ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+        #spring.redis.pool.max-wait=-1
+        max-wait: -1
+        ## 连接池中的最大空闲连接
+        #spring.redis.pool.max-idle=8
+        max-idle: 8
+        ## 连接池中的最小空闲连接
+        #spring.redis.pool.min-idle=0
+        min-idle: 0
+
 
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     auto-mapping-behavior: full
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:mapper/**/*Mapper.xml
 
 
 # 配置定时任务向ems传送数据的周期
 configtask:
-  cron: "*/20 * * * * ?"
+  cron: "*/20 * * 1 * ?"
 
 szy:
   server:
